@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Tree<T> {
     private Node<T> root;
@@ -88,7 +90,7 @@ public class Tree<T> {
             StringBuilder levelString = new StringBuilder();
             List<Node<T>> nodes = list.subList(beginIndex, endIndex);
             for (Node<T> node : nodes) {
-                levelString.append(null == node ? " ".repeat(maxWidth + spaceWidth) : getCenteredString(maxWidth + spaceWidth, node.value.toString()));
+                levelString.append(null == node ? getEmptyStringWithLength(maxWidth + spaceWidth) : getCenteredString(maxWidth + spaceWidth, node.value.toString()));
             }
             maxWidth = (2 * maxWidth) + spaceWidth;
             treeBuilder.insert(0, levelString.toString() + '\n');
@@ -105,6 +107,10 @@ public class Tree<T> {
         int padStart = s.length() + padSize / 2;
         s = String.format("%" + padStart + "s", s);
         return String.format("%-" + width  + "s", s);
+    }
+
+    private String getEmptyStringWithLength(int length) {
+        return Stream.generate(() -> String.valueOf(' ')).limit(length).collect(Collectors.joining());
     }
 
     private int getElementsWidth(T e) {
